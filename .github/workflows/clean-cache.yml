@@ -6,6 +6,7 @@ on:
 
 jobs:
   cleanup:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
