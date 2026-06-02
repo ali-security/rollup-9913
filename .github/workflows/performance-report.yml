@@ -26,7 +26,7 @@ jobs:
           - name: previous
             ref: ${{ github.event.pull_request.base.sha }}
     name: Build ${{matrix.settings.name}} artefact
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -46,8 +46,8 @@ jobs:
             ~/.cargo/git/db/
             .cargo-cache
             rust/target/
-          key: x86_64-unknown-linux-gnu-cargo-ubuntu-latest-${{ hashFiles('rust/Cargo.lock') }}
-          restore-keys: x86_64-unknown-linux-gnu-cargo-ubuntu-latest
+          key: x86_64-unknown-linux-gnu-cargo-ubuntu-24.04-${{ hashFiles('rust/Cargo.lock') }}
+          restore-keys: x86_64-unknown-linux-gnu-cargo-ubuntu-24.04
       - name: Setup Node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
@@ -68,7 +68,7 @@ jobs:
     needs: build-artefacts
     permissions:
       pull-requests: write # for peter-evans/find-comment and peter-evans/create-or-update-comment
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Report Performance
     steps:
       - name: Checkout Commit
@@ -89,8 +89,8 @@ jobs:
             ~/.cargo/git/db/
             .cargo-cache
             rust/target/
-          key: x86_64-unknown-linux-gnu-cargo-ubuntu-latest-${{ hashFiles('rust/Cargo.lock') }}
-          restore-keys: x86_64-unknown-linux-gnu-cargo-ubuntu-latest
+          key: x86_64-unknown-linux-gnu-cargo-ubuntu-24.04-${{ hashFiles('rust/Cargo.lock') }}
+          restore-keys: x86_64-unknown-linux-gnu-cargo-ubuntu-24.04
       - name: Setup Node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
@@ -112,8 +112,8 @@ jobs:
         id: findPerformanceReport
         with:
           issue-number: ${{ github.event.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: 'Performance report'
+          comment-author: github-actions[bot]
+          body-includes: Performance report
       - name: Create or update Performance report
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5.0.0
         id: createOrUpdatePerformanceReport

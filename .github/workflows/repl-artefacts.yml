@@ -20,7 +20,7 @@ jobs:
     permissions:
       pull-requests: write # for peter-evans/find-comment and peter-evans/create-or-update-comment
     if: false
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Upload
     steps:
       - name: Checkout Commit
@@ -46,8 +46,8 @@ jobs:
             ~/.cargo/git/db/
             .cargo-cache
             rust/target/
-          key: wasm-cargo-ubuntu-latest-${{ hashFiles('rust/Cargo.lock') }}
-          restore-keys: wasm-cargo-ubuntu-latest
+          key: wasm-cargo-ubuntu-24.04-${{ hashFiles('rust/Cargo.lock') }}
+          restore-keys: wasm-cargo-ubuntu-24.04
       - name: Setup Node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
@@ -96,8 +96,8 @@ jobs:
         id: findComment
         with:
           issue-number: ${{ github.event.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: 'Thank you for your contribution!'
+          comment-author: github-actions[bot]
+          body-includes: Thank you for your contribution!
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5.0.0
         id: createInitialComment

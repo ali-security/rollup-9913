@@ -8,8 +8,9 @@ on:
   push:
     branches:
       - master
+      - main
     tags:
-      - 'v*.*.**'
+      - v*.*.**
   pull_request:
     types:
       - synchronize
@@ -28,7 +29,7 @@ jobs:
   lint:
     if: false
     name: Lint and Audit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout Commit
@@ -60,7 +61,7 @@ jobs:
       matrix:
         settings:
           # WASM
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: wasm32-unknown-unknown
             name: wasm
             is-wasm-build: true
@@ -68,7 +69,7 @@ jobs:
             path: |
               wasm/
               .empty
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: wasm32-unknown-unknown
             name: wasm-node
             is-wasm-build: true
@@ -78,15 +79,15 @@ jobs:
               .empty
 
           # Windows
-          - host: windows-latest
+          - host: windows-2025
             target: x86_64-pc-windows-msvc
             env:
               RUSTFLAGS: -Ctarget-feature=+crt-static
-          - host: windows-latest
+          - host: windows-2025
             target: i686-pc-windows-msvc
-          - host: windows-latest
+          - host: windows-2025
             target: aarch64-pc-windows-msvc
-          - host: windows-latest
+          - host: windows-2025
             target: x86_64-pc-windows-gnu
             msystem: ucrt64
             toolchain: ucrt-x86_64
@@ -106,19 +107,19 @@ jobs:
               MINGW_ARCH: ucrt64
 
           # MacOS
-          - host: macos-latest
+          - host: macos-15
             target: x86_64-apple-darwin
-          - host: macos-latest
+          - host: macos-15
             target: aarch64-apple-darwin
 
           # Linux
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: x86_64-unknown-linux-gnu
             cross: napi
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: x86_64-unknown-linux-musl
             cross: zig
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: armv7-unknown-linux-gnueabihf
             env:
               TARGET_CC: clang
@@ -126,10 +127,10 @@ jobs:
               sudo apt-get update
               sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf libatomic1-armhf-cross -y
             cross: napi
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: armv7-unknown-linux-musleabihf
             cross: zig
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: aarch64-unknown-linux-gnu
             env:
               TARGET_CC: clang
@@ -137,26 +138,26 @@ jobs:
               sudo apt-get update
               sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu -y
             cross: napi
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: aarch64-unknown-linux-musl
             cross: zig
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: armv7-linux-androideabi
             cross: napi
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: aarch64-linux-android
             cross: napi
             # There are compile issues when using the cache with Android
             cache-cargo: false
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: riscv64gc-unknown-linux-gnu
             setup: |
               sudo apt-get update
               sudo apt-get install gcc-riscv64-linux-gnu g++-riscv64-linux-gnu -y
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: riscv64gc-unknown-linux-musl
             cross: zig
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: powerpc64le-unknown-linux-gnu
             env:
               TARGET_CC: clang
@@ -164,10 +165,10 @@ jobs:
               sudo apt-get update
               sudo apt-get install gcc-powerpc64le-linux-gnu g++-powerpc64le-linux-gnu -y
             cross: napi
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: powerpc64le-unknown-linux-musl
             cross: zig
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: s390x-unknown-linux-gnu
             env:
               CC: clang
@@ -177,7 +178,7 @@ jobs:
               sudo apt-get update
               sudo apt-get install gcc-s390x-linux-gnu g++-s390x-linux-gnu -y
             cross: napi
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: loongarch64-unknown-linux-gnu
             setup: |
               sudo apt-get update
@@ -190,18 +191,18 @@ jobs:
                 --slave /usr/bin/loongarch64-linux-gnu-gcov loongarch64-linux-gnu-gcov /usr/bin/loongarch64-linux-gnu-gcov-13
               sudo update-alternatives \
                 --install /usr/bin/loongarch64-linux-gnu-cpp loongarch64-linux-gnu-cpp /usr/bin/loongarch64-linux-gnu-cpp-13 100
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: loongarch64-unknown-linux-musl
             cross: zig
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: aarch64-unknown-linux-ohos
 
           # FreeBSD
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: x86_64-unknown-freebsd
             cross: cross
             build-std: true
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: aarch64-unknown-freebsd
             cross: cross
             build-std: true
@@ -315,7 +316,7 @@ jobs:
   build-openbsd:
     if: false
     name: Build x86_64-unknown-openbsd
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         os:
@@ -336,8 +337,8 @@ jobs:
             ~/.cargo/git/db/
             .cargo-cache
             rust/target/
-          key: x86_64-unknown-openbsd-cargo-ubuntu-latest-${{ hashFiles('rust/Cargo.lock') }}
-          restore-keys: x86_64-unknown-openbsd-cargo-ubuntu-latest
+          key: x86_64-unknown-openbsd-cargo-ubuntu-24.04-${{ hashFiles('rust/Cargo.lock') }}
+          restore-keys: x86_64-unknown-openbsd-cargo-ubuntu-24.04
 
       - name: Install and Cache Node Dependencies
         uses: ./.github/actions/install-and-cache-node-deps
@@ -363,7 +364,7 @@ jobs:
             ~/.cargo/git/db/
             .cargo-cache
             rust/target/
-          key: x86_64-unknown-openbsd-cargo-ubuntu-latest-${{ hashFiles('rust/Cargo.lock') }}
+          key: x86_64-unknown-openbsd-cargo-ubuntu-24.04-${{ hashFiles('rust/Cargo.lock') }}
 
       - name: Upload napi artifact
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
@@ -408,7 +409,7 @@ jobs:
           #          - arch: riscv64
           #            distro: ubuntu_latest
           #            target: riscv64gc-unknown-linux-gnu
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
       - name: Checkout Commit
@@ -469,13 +470,13 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          - host: ubuntu-latest
+          - host: ubuntu-24.04
             target: x86_64-unknown-linux-gnu
             package: linux-x64-gnu
-          - host: windows-latest
+          - host: windows-2025
             target: x86_64-pc-windows-msvc
             package: win32-x64-msvc
-          - host: macos-latest
+          - host: macos-15
             target: aarch64-apple-darwin
             package: darwin-arm64
           - host: ubuntu-24.04-arm
@@ -485,29 +486,29 @@ jobs:
             target: aarch64-pc-windows-msvc
             package: win32-arm64-msvc
         node:
-          - '18.20.0'
+          - 18.20.0
           - 24
         include:
           - settings:
-              host: ubuntu-latest
+              host: ubuntu-24.04
               target: x86_64-unknown-linux-gnu
               package: linux-x64-gnu
             node: 24
-            command: 'ci:coverage'
+            command: ci:coverage
             additionalName: ' with Coverage'
             coverage: true
           - settings:
-              host: ubuntu-latest
+              host: ubuntu-24.04
               target: x86_64-unknown-linux-gnu
               package: linux-x64-gnu
-            node: '18.20.0'
-            command: 'ci:test:all'
+            node: 18.20.0
+            command: ci:test:all
             additionalName: ' with Additional Tests'
         exclude:
           # Windows ARM builds were not provided for a while
           - settings:
               target: aarch64-pc-windows-msvc
-            node: '18.20.0'
+            node: 18.20.0
     runs-on: ${{ matrix.settings.host }}
     timeout-minutes: 15
     steps:
@@ -555,7 +556,7 @@ jobs:
       contents: write # for creating a release
       id-token: write  # Required for OIDC
     name: Publish
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     needs:
       - lint
@@ -572,7 +573,7 @@ jobs:
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: 24.10.0
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: https://registry.npmjs.org
       - name: Update npm for publishing
         run: npm install -g npm@11.6.2
       - name: Install and Cache Node Dependencies
@@ -595,11 +596,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          ROLLUP_RELEASE: 'releasing'
+          ROLLUP_RELEASE: releasing
 
   build-and-test:
     name: Build and Test (Node ${{ matrix.node }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
